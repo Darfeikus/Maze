@@ -23,6 +23,7 @@ struct Tablero{
     int height;
     int width;
     struct Tile* start;
+    struct Tile* goal;
     struct Tile** grid;
 };
 
