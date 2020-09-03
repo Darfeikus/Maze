@@ -2,24 +2,32 @@ struct coord{
     int x,y;
 };
 
+/*
+    0 free
+    1 occupied
+    2 player
+    3 goal
+*/
+
 struct Tile
 {
     int val;
-    coord* self;
-    coord* up;
-    coord* down;
-    coord* left;
-    coord* right;
+    struct coord* self;
+    struct Tile* up;
+    struct Tile* down;
+    struct Tile* left;
+    struct Tile* right;
 };
 
 struct Tablero{
     int height;
-    int length;
-    Tile** tablero;
+    int width;
+    struct Tile* start;
+    struct Tile** grid;
 };
 
 struct Player
 {
-    coord* pos;
+    struct coord* pos;
 };
 
