@@ -3,5 +3,5 @@
 #include "Tablero.h"
 
 int main(){
-    struct Tablero* board = getTablero(10,0,0,9,9);
+    struct Tablero* board = getTablero(20,0,0,19,19);
 } 

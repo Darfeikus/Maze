@@ -37,6 +37,13 @@ int cleanGrid(struct Tile** pointer_grid){
             (c+i)->val = 1;
         }
     }
+
+    for(int i = 0; i < size*size; i++){
+        if((c+i)->val==1){
+            (c+i)->val = rand()%2;
+        }
+    }
+
     return o;
 }
 
@@ -211,7 +218,9 @@ struct Tablero* getTablero(int s,int x1, int y1, int x2, int y2){
     board->start->val = 5;
     board->goal->val = 4;
     int o = 0;
-    while(o<size/3){
+    int time_s = 100;
+    while(o<size/3 && time_s>0){
+        time_s--;
         o = createPath(board); // get amount of 0's when creating path
     }
     printGridNormal(board->grid);
