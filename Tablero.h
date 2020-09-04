@@ -7,9 +7,11 @@ time_t t;
 int size;
 int uncrossed; //boolean that tells when the two paths have crossed
 
-void printTile(struct Tile* tile){
+void printTile(struct Tile* tile,struct Tile* goal){
     if(tile->up!=NULL){
-        if (tile->up->val)
+        if(tile->up == goal)
+            printf("xgx\n");
+        else if (tile->up->val)
             printf("x■x\n");
         else
             printf("x x\n");
@@ -18,7 +20,9 @@ void printTile(struct Tile* tile){
         printf("■■■\n");
 
     if(tile->left!=NULL){
-        if (tile->left->val)
+        if(tile->left == goal)
+            printf("g");
+        else if (tile->left->val)
             printf("■");
         else
             printf(" ");
@@ -29,7 +33,9 @@ void printTile(struct Tile* tile){
     printf("o");
 
     if(tile->right!=NULL){
-        if (tile->right->val)
+        if(tile->right == goal)
+            printf("g\n");
+        else if (tile->right->val)
             printf("■\n");
         else
             printf(" \n");
@@ -38,7 +44,9 @@ void printTile(struct Tile* tile){
         printf("■\n");
 
     if(tile->down!=NULL){
-        if (tile->down->val)
+        if(tile->down == goal)
+            printf("xgx\n");
+        else if (tile->down->val)
             printf("x■x\n");
         else
             printf("x x\n");
@@ -114,7 +122,7 @@ void printGridBinary(struct Tile** grid, int x, int y){;
     printf("\n");
 }
 
-void printGridBinaryFile(struct Tile** grid, int x, int y){;
+void printGridBinaryFile(struct Tile** grid, int x, int y, int x1, int y1){
     FILE * fp;
     fp = fopen("out","w");
     for(int i = 0; i < size+1; i++)
@@ -127,6 +135,8 @@ void printGridBinaryFile(struct Tile** grid, int x, int y){;
         }
         if(x+y*size == i)
             fprintf(fp,"o");
+        else if(x1+y1*size == i)
+            fprintf(fp,"x");
         else
             fprintf(fp,"%s",((*grid)+i)->val ? "■":" ");
     }
@@ -302,6 +312,7 @@ struct Tablero* getTablero(int s,int x1, int y1, int x2, int y2){
             board = (struct Tablero*)malloc(sizeof(struct Tablero));
         }
     }
+    free(board);
     return bestBoard;
 }
 

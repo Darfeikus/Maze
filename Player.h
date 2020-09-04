@@ -7,9 +7,9 @@ int game(struct Player* player,int x, int y,struct Tile* goal,struct Tablero* bo
     while (player->pos != goal && cont)
     {
         movements++;
-        printGridBinaryFile(board->grid, player->pos->self->x, player->pos->self->y);
+        printGridBinaryFile(board->grid, player->pos->self->x, player->pos->self->y,goal->self->x,goal->self->y);
         system("clear");
-        printTile(player->pos);
+        printTile(player->pos,goal);
         char c;
         scanf("%c", &c);
 
@@ -56,7 +56,7 @@ int game(struct Player* player,int x, int y,struct Tile* goal,struct Tablero* bo
             }
             break;
         case 'e':
-            printf("You Lose");
+            printf("You Lose\n");
             cont = 0;
             break;
         default:
@@ -64,5 +64,6 @@ int game(struct Player* player,int x, int y,struct Tile* goal,struct Tablero* bo
         }
     }
     system("clear");
-    printGridBinaryFile(board->grid, player->pos->self->x, player->pos->self->y);
+    printGridBinaryFile(board->grid, player->pos->self->x, player->pos->self->y,goal->self->x,goal->self->y);
+    return movements/2;
 }
