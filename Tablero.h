@@ -35,7 +35,7 @@ void printTile(struct Tile* tile){
             printf(" \n");
     }
     else
-        printf("■");
+        printf("■\n");
 
     if(tile->down!=NULL){
         if (tile->down->val)
@@ -130,6 +130,7 @@ void printGridBinaryFile(struct Tile** grid, int x, int y){;
         else
             fprintf(fp,"%s",((*grid)+i)->val ? "■":" ");
     }
+    fprintf(fp,"■");
     fprintf(fp,"\n");
     for(int i = 0; i < size+2; i++)
         fprintf(fp,"■");
