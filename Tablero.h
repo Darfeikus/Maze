@@ -7,6 +7,46 @@ time_t t;
 int size;
 int uncrossed; //boolean that tells when the two paths have crossed
 
+void printTile(struct Tile* tile){
+    if(tile->up!=NULL){
+        if (tile->up->val)
+            printf("x■x\n");
+        else
+            printf("x x\n");
+    }
+    else
+        printf("■■■\n");
+
+    if(tile->left!=NULL){
+        if (tile->left->val)
+            printf("■");
+        else
+            printf(" ");
+    }
+    else
+        printf("■");
+
+    printf("o");
+
+    if(tile->right!=NULL){
+        if (tile->right->val)
+            printf("■\n");
+        else
+            printf(" \n");
+    }
+    else
+        printf("■");
+
+    if(tile->down!=NULL){
+        if (tile->down->val)
+            printf("x■x\n");
+        else
+            printf("x x\n");
+    }
+    else
+        printf("■■■\n");
+}
+
 void clean(struct Tile** pointer_grid){
     *pointer_grid = (struct Tile*)malloc(sizeof(struct Tile)*size*size);
     struct Tile* c= *pointer_grid;
@@ -25,28 +65,23 @@ void clean(struct Tile** pointer_grid){
 int cleanGrid(struct Tile** pointer_grid){
     int o = 0;
     struct Tile* c= *pointer_grid;
-    for(int i = 0; i < size*size; i++){
+    for(int i = 0; i < size*size; i++)
         if((c+i)->val==5 || (c+i)->val==4){
             (c+i)->val = 0;
             o++;
         }
-        else if((c+i)->val==7 || (c+i)->val==8){
+        else if((c+i)->val==7 || (c+i)->val==8)
             (c+i)->val = 1;
-        }
-        else{
+        else
             (c+i)->val = 1;
-        }
-    }
     if(size>10){
         int r = 0;
-        for(int i = 0; i < size*size; i++){
+        for(int i = 0; i < size*size; i++)
             if((c+i)->val==1){
                 r = rand()%3;
                 (c+i)->val = r<1 ? 0:1;
             }
-        }
     }
-
     return o;
 }
 
@@ -59,13 +94,47 @@ void printGrid(struct Tile** grid){;
     printf("\n");
 }
 
-void printGridBinary(struct Tile** grid){;
+void printGridBinary(struct Tile** grid, int x, int y){;
+    for(int i = 0; i < size+1; i++)
+        printf("■");
     for(int i = 0; i < size*size; i++){
-        if(i%size==0 && i!=0)
+        if(i%size==0){
+            printf("■");
             printf("\n");
-        printf("%d\t",((*grid)+i)->val>1);
+            printf("■");
+        }
+        if(x+y*size == i)
+            printf("o");
+        else
+            printf("%s",((*grid)+i)->val ? "■":" ");
     }
     printf("\n");
+    for(int i = 0; i < size+2; i++)
+        printf("■");
+    printf("\n");
+}
+
+void printGridBinaryFile(struct Tile** grid, int x, int y){;
+    FILE * fp;
+    fp = fopen("out","w");
+    for(int i = 0; i < size+1; i++)
+        fprintf(fp,"■");
+    for(int i = 0; i < size*size; i++){
+        if(i%size==0){
+            fprintf(fp,"■");
+            fprintf(fp,"\n");
+            fprintf(fp,"■");
+        }
+        if(x+y*size == i)
+            fprintf(fp,"o");
+        else
+            fprintf(fp,"%s",((*grid)+i)->val ? "■":" ");
+    }
+    fprintf(fp,"\n");
+    for(int i = 0; i < size+2; i++)
+        fprintf(fp,"■");
+    fprintf(fp,"\n");
+    fclose(fp);
 }
 
 void printGridNormal(struct Tile** grid){;
@@ -90,9 +159,8 @@ struct Tile* draw(struct Tile* t, int direction,int move){
                     uncrossed = 0;
                     return t;
                 }
-                if(t->val != val && t->val>3){
+                if(t->val != val && t->val>3)
                     return t->down;
-                }
                 t->val=val;
             }
             return t;
@@ -102,9 +170,8 @@ struct Tile* draw(struct Tile* t, int direction,int move){
                 draw(t,direction+1,move);
             while(t->down!=NULL && move>0){ //keep moving down and change values
                 t=t->down;
-                if(t->val != val && t->val>3){
+                if(t->val != val && t->val>3)
                     return t->up;
-                }
                 move--;
                 if(abs(t->val-val)==1){//They crossed
                     uncrossed = 0;
@@ -119,9 +186,8 @@ struct Tile* draw(struct Tile* t, int direction,int move){
                 draw(t,direction+1,move);
             while(t->left!=NULL && move>0){ //keep moving left and change values
                 t=t->left;
-                if(t->val != val && t->val>3){
+                if(t->val != val && t->val>3)
                     return t->right;
-                }
                 move--;             
                 if(abs(t->val-val)==1){//They crossed
                     uncrossed = 0;
@@ -136,9 +202,8 @@ struct Tile* draw(struct Tile* t, int direction,int move){
                 draw(t,0,move);
             while(t->right!=NULL && move>0){ //keep moving right and change values
                 t=t->right;
-                if(t->val != val && t->val>3){
+                if(t->val != val && t->val>3)
                     return t->left;
-                }
                 move--;             
                 if(abs(t->val-val)==1){//They crossed
                     uncrossed = 0;
@@ -172,8 +237,6 @@ int createPath(struct Tablero* board){
 
     p3->val = 7;
     p4->val = 8;
-    // printf("Original: \n");
-    // printGridNormal(board->grid);
     
     int dir1,dir2,hv1,hv2;
     dir1=0;
@@ -191,10 +254,10 @@ int createPath(struct Tablero* board){
         dir2=rand()%2+hv2;
         p2=draw(p2,dir2,rand()%MAX_PATH_SIZE+2);
     }
-    // printf("Path drawn: \n");
-    // printGridNormal(board->grid);
+
     uncrossed = 1;
     int stop = 200;
+
     while(uncrossed && stop>0){ //Generate principal path
         stop--;
         hv1 = dir1 < 2 ? hv1+2:hv1-2;//Go vertical or horizontl next move
@@ -212,15 +275,18 @@ struct Tablero* getTablero(int s,int x1, int y1, int x2, int y2){
     size = s;
     //Create board
     struct Tablero* board = (struct Tablero*)malloc(sizeof(struct Tablero));
-    board->height=size;
-    board->width=size;
+    struct Tablero* bestBoard = (struct Tablero*)malloc(sizeof(struct Tablero));
     
-    //establish grid size
-    board->grid = (struct Tile**)malloc(sizeof(struct Tile)*size*size);
-    int time_s = 10000;
-    int o = size;
-    
-    while(o>size/2 && time_s>0){
+    int time_s = 100000;
+    int o = size*size;
+    int areaof_error = size/2;
+    int min_o = o;
+
+    while(o>areaof_error && time_s>0){
+        board->height=size;
+        board->width=size;
+        //establish grid size
+        board->grid = (struct Tile**)malloc(sizeof(struct Tile)*size*size);
         clean(board->grid);
         board->start = *(board->grid)+(x1+y1*size);
         board->goal = *(board->grid)+(x2+y2*size);
@@ -228,10 +294,14 @@ struct Tablero* getTablero(int s,int x1, int y1, int x2, int y2){
         board->goal->val = 4;
         time_s--;
         o = createPath(board); // get amount of 0's when creating path
+        if(min_o>o){
+            min_o = o;
+            free(bestBoard);
+            bestBoard = board;
+            board = (struct Tablero*)malloc(sizeof(struct Tablero));
+        }
     }
-    printf("Final: \n");
-    printGridNormal(board->grid);
-    return board;
+    return bestBoard;
 }
 
 

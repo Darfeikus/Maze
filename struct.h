@@ -29,6 +29,6 @@ struct Tablero{
 
 struct Player
 {
-    struct coord* pos;
+    struct Tile* pos;
 };
 
