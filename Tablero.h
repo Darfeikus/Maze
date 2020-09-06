@@ -67,7 +67,7 @@ void clean(struct Tile** pointer_grid){
         (c+i)->down = i+size<size*size ? ((c+i)+size):NULL;
         (c+i)->left = i%size!=0 && i-1>0 ? ((c+i)-1):NULL;
         (c+i)->right = (i+1)%size!=0 && i+1<size*size ? ((c+i)+1):NULL;
-    }   
+    }
 }
 
 int cleanGrid(struct Tile** pointer_grid){
@@ -84,42 +84,17 @@ int cleanGrid(struct Tile** pointer_grid){
             (c+i)->val = 1;
     if(size>10){
         int r = 0;
-        for(int i = 0; i < size*size; i++)
-            if((c+i)->val==1){
-                r = rand()%3;
-                (c+i)->val = r<1 ? 0:1;
-            }
+        // for (int z = 0; z < 1; z++)
+        // {
+            for(int i = 0; i < size*size; i++)
+                if((c+i)->val==1){
+                    r = rand()%3;
+                    (c+i)->val = r<1 ? 0:1;
+                }
+        // }
+        
     }
     return o;
-}
-
-void printGrid(struct Tile** grid){;
-    for(int i = 0; i < size*size; i++){
-        if(i%size==0 && i!=0)
-            printf("\n");
-        printf("(%d,%d) | %d\t",((*grid)+i)->self->x,((*grid)+i)->self->y,((*grid)+i)->val);
-    }
-    printf("\n");
-}
-
-void printGridBinary(struct Tile** grid, int x, int y){;
-    for(int i = 0; i < size+1; i++)
-        printf("■");
-    for(int i = 0; i < size*size; i++){
-        if(i%size==0){
-            printf("■");
-            printf("\n");
-            printf("■");
-        }
-        if(x+y*size == i)
-            printf("o");
-        else
-            printf("%s",((*grid)+i)->val ? "■":" ");
-    }
-    printf("\n");
-    for(int i = 0; i < size+2; i++)
-        printf("■");
-    printf("\n");
 }
 
 void printGridBinaryFile(struct Tile** grid, int x, int y, int x1, int y1){
@@ -146,15 +121,6 @@ void printGridBinaryFile(struct Tile** grid, int x, int y, int x1, int y1){
         fprintf(fp,"■");
     fprintf(fp,"\n");
     fclose(fp);
-}
-
-void printGridNormal(struct Tile** grid){;
-    for(int i = 0; i < size*size; i++){
-        if(i%size==0 && i!=0)
-            printf("\n");
-        printf("%d\t",((*grid)+i)->val);
-    }
-    printf("\n\n");
 }
 
 struct Tile* draw(struct Tile* t, int direction,int move){
@@ -199,7 +165,7 @@ struct Tile* draw(struct Tile* t, int direction,int move){
                 t=t->left;
                 if(t->val != val && t->val>3)
                     return t->right;
-                move--;             
+                move--;
                 if(abs(t->val-val)==1){//They crossed
                     uncrossed = 0;
                     return t;
@@ -215,7 +181,7 @@ struct Tile* draw(struct Tile* t, int direction,int move){
                 t=t->right;
                 if(t->val != val && t->val>3)
                     return t->left;
-                move--;             
+                move--;
                 if(abs(t->val-val)==1){//They crossed
                     uncrossed = 0;
                     return t;
@@ -233,7 +199,7 @@ int createPath(struct Tablero* board){
     int MAX_PATH_SIZE = size/5>=2 ? size/5:2;
     struct Tile* start = board->start;
     struct Tile* goal = board->goal;
-    
+
     struct Tile* p1 = start;
     struct Tile* p2 = goal;
     struct Tile* p3 = *(board->grid)+rand()%(size*size);
@@ -248,7 +214,7 @@ int createPath(struct Tablero* board){
 
     p3->val = 7;
     p4->val = 8;
-    
+
     int dir1,dir2,hv1,hv2;
     dir1=0;
     dir2=0;
@@ -261,7 +227,7 @@ int createPath(struct Tablero* board){
         hv2 = dir2 < 2 ? hv2+2:hv2-2;
         dir1=rand()%2+hv1;
         p1=draw(p1,dir1,rand()%MAX_PATH_SIZE+2);
-        
+
         dir2=rand()%2+hv2;
         p2=draw(p2,dir2,rand()%MAX_PATH_SIZE+2);
     }
@@ -274,21 +240,21 @@ int createPath(struct Tablero* board){
         hv1 = dir1 < 2 ? hv1+2:hv1-2;//Go vertical or horizontl next move
         hv2 = dir2 < 2 ? hv2+2:hv2-2;
         dir1=rand()%2+hv1;
-        p3=draw(p3,dir1,rand()%MAX_PATH_SIZE+2);
-        
+        p3=draw(p3,dir1,rand()%MAX_PATH_SIZE+4);
+
         dir2=rand()%2+hv2;
-        p4=draw(p4,dir2,rand()%MAX_PATH_SIZE+2);
+        p4=draw(p4,dir2,rand()%MAX_PATH_SIZE+4);
     }
     return cleanGrid(board->grid);
 }
 
-struct Tablero* getTablero(int s,int x1, int y1, int x2, int y2){
+struct Tablero* getTablero(int s,int x1, int y1, int x2, int y2, int tries){
     size = s;
     //Create board
     struct Tablero* board = (struct Tablero*)malloc(sizeof(struct Tablero));
     struct Tablero* bestBoard = (struct Tablero*)malloc(sizeof(struct Tablero));
-    
-    int time_s = 100000;
+
+    int time_s = tries;
     int o = size*size;
     int areaof_error = size/2;
     int min_o = o;
