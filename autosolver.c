@@ -2,9 +2,9 @@
 
 int main()
 {
-    int x = 2;
-    int y = 3;
-    int size = 25;
+    int x = 0;
+    int y = 0;
+    int size = 60;
     int x1 = size-1;
     int y1 = size-1;
 
@@ -16,9 +16,5 @@ int main()
     
     player->pos = *(board->grid) + (x + y * size);
     
-    printf("You took %d moves", autoGame(player,x,y,goal,board));
-    
-    free(player);
-    free(goal);
-    free(board);
+    printf("You took %d moves\n", autoGame(player,x,y,goal,board));
 }

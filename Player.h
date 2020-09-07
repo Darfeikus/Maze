@@ -70,7 +70,7 @@ int game(struct Player* player,int x, int y,struct Tile* goal,struct Tablero* bo
     }
     // system("clear");
     printGridBinaryFile(board->grid, player->pos->self->x, player->pos->self->y,goal->self->x,goal->self->y);
-    return movements/2;
+    return movements;
 }
 
 int calcularPath(struct Tile* chuckee, struct Tile* goal, struct Queue** stack)
@@ -139,10 +139,9 @@ int autoGame(struct Player* player,int x, int y,struct Tile* goal,struct Tablero
     {
         movements++;
         printGridBinaryFile(board->grid, player->pos->self->x, player->pos->self->y,goal->self->x,goal->self->y);
-        //system("cls");
+        system("cls");
         printTile(player->pos,goal);
         char c = get(&stack)->dir;
-        printf("%c\n", c);
 
         switch (c)
         {
@@ -193,9 +192,10 @@ int autoGame(struct Player* player,int x, int y,struct Tile* goal,struct Tablero
         default:
             break;
         }
-        // sleep(1);
+        sleep(1);
     }
-    //system("cls");
+    system("cls");
     printGridBinaryFile(board->grid, player->pos->self->x, player->pos->self->y,goal->self->x,goal->self->y);
-    return movements/2;
+    printTile(player->pos,goal);
+    return movements;
 }
