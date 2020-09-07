@@ -1,4 +1,9 @@
 #include "Tablero.h"
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
 
 int game(struct Player* player,int x, int y,struct Tile* goal,struct Tablero* board){
     player->pos = *(board->grid) + (x + y * size);
@@ -68,34 +73,67 @@ int game(struct Player* player,int x, int y,struct Tile* goal,struct Tablero* bo
     return movements/2;
 }
 
-char seleccionarLetra(struct Tile* chuckee, struct Tile* goal)
+int calcularPath(struct Tile* chuckee, struct Tile* goal, struct Queue** stack)
 {
-    if (chuckee == goal)
-        return 'e';
+    struct node *tmp = (struct node*)malloc(sizeof(struct node));
+
+    if (chuckee == goal) {
+        tmp->dir='e';
+        iatb(stack, tmp);
+        chuckee -> val = 0;
+        return 1;
+    }
+
+    chuckee -> val = 2;
 
     if (chuckee->right != NULL && chuckee->right->val == 0)
-        if( seleccionarLetra(chuckee->right,goal))
-            return 'd';
+        if( calcularPath(chuckee->right,goal, stack))
+        {
+            tmp->dir='d';
+            iatb(stack, tmp);
+            chuckee -> val = 0;
+            return 1;
+        }
 
     if (chuckee->down != NULL && chuckee->down->val == 0)
-        if( seleccionarLetra(chuckee->down,goal))
-            return 's';
+        if( calcularPath(chuckee->down,goal, stack))
+        {
+            tmp->dir='s';
+            iatb(stack, tmp);
+            chuckee -> val = 0;
+            return 1;
+        }
 
     if (chuckee->left != NULL && chuckee->left->val == 0)
-        if( seleccionarLetra(chuckee->left,goal))
-            return 'a';
+        if( calcularPath(chuckee->left,goal, stack))
+        {
+            tmp->dir='a';
+            iatb(stack, tmp);
+            chuckee -> val = 0;
+            return 1;
+        }
     
     if (chuckee->up != NULL && chuckee->up->val == 0)
-        if( seleccionarLetra(chuckee->up,goal))
-            return 'w';
+        if( calcularPath(chuckee->up,goal, stack))
+        {
+            tmp->dir='w';
+            iatb(stack, tmp);
+            chuckee -> val = 0;
+            return 1;
+        }
 
-    return 'e';
+    chuckee -> val = 0;
+    return 0;
 }
 
 int autoGame(struct Player* player,int x, int y,struct Tile* goal,struct Tablero* board){
     player->pos = *(board->grid) + (x + y * size);
     int movements = -1;
     int cont = 1;
+    struct Queue* stack = calloc(1,sizeof(struct Queue));
+
+    
+    calcularPath(player->pos, goal, &stack);
 
     while (player->pos != goal && cont)
     {
@@ -103,7 +141,8 @@ int autoGame(struct Player* player,int x, int y,struct Tile* goal,struct Tablero
         printGridBinaryFile(board->grid, player->pos->self->x, player->pos->self->y,goal->self->x,goal->self->y);
         //system("cls");
         printTile(player->pos,goal);
-        char c = seleccionarLetra(player->pos,goal);
+        char c = get(&stack)->dir;
+        printf("%c\n", c);
 
         switch (c)
         {
@@ -154,7 +193,7 @@ int autoGame(struct Player* player,int x, int y,struct Tile* goal,struct Tablero
         default:
             break;
         }
-        sleep(1);
+        // sleep(1);
     }
     //system("cls");
     printGridBinaryFile(board->grid, player->pos->self->x, player->pos->self->y,goal->self->x,goal->self->y);

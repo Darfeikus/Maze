@@ -4,9 +4,9 @@ int main()
 {
     int x = 2;
     int y = 3;
-    int x1 = 14;
-    int y1 = 14;
-    int size = 15;
+    int size = 25;
+    int x1 = size-1;
+    int y1 = size-1;
 
     struct Tablero *board = getTablero(size, x, y, x1, y1, 1000);
     struct Tile *goal = (struct Tile*)malloc(sizeof(struct Tile));

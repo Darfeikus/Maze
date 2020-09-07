@@ -1,4 +1,5 @@
 #include "struct.h"
+#include "queue.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -10,11 +11,11 @@ int uncrossed; //boolean that tells when the two paths have crossed
 void printTile(struct Tile* tile,struct Tile* goal){
     if(tile->up!=NULL){
         if(tile->up == goal)
-            printf("xgx\n");
+            printf("·g·\n");
         else if (tile->up->val)
-            printf("x■x\n");
+            printf("·■·\n");
         else
-            printf("x x\n");
+            printf("· ·\n");
     }
     else
         printf("■■■\n");
@@ -45,11 +46,11 @@ void printTile(struct Tile* tile,struct Tile* goal){
 
     if(tile->down!=NULL){
         if(tile->down == goal)
-            printf("xgx\n");
+            printf("·g·\n");
         else if (tile->down->val)
-            printf("x■x\n");
+            printf("·■·\n");
         else
-            printf("x x\n");
+            printf("· ·\n");
     }
     else
         printf("■■■\n");
