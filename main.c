@@ -1,14 +1,17 @@
 #include "Player.h"
+#include "lib_myscanner.h"
+#include "new_board.h"
 
-int main()
-{
-    int x = 2;
-    int y = 3;
-    int x1 = 34;
-    int y1 = 34;
-    int size = 40;
+int main() {   
+    struct scanner s = scan();
+    int x = getHorizontalStart(s);
+    int y = getVerticalStart(s);
+    int x1 = getHorizontalEnd(s);
+    int y1 = getVerticalEnd(s);
+    int size = s.size;
 
-    struct Tablero *board = getTablero(size, x, y, x1, y1, 1000);
+    struct Tablero *board = getTablero(size, x, y, x1, y1, 1);
+    board->grid = changeTablero(board->grid, s);
     struct Tile *goal = *(board->grid) + (x1 + y1 * size);
     struct Player *player = (struct Player *)malloc(sizeof(struct Player));
 

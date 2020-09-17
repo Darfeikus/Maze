@@ -2,14 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-//Struct donde se almacena tamaño del laberinto y el laberinto en un solo string
-struct scanner
-{
+// Struct donde se almacena tamaño del laberinto y el laberinto en un solo string
+struct scanner {
     int size;
     char * maze;
 };
 
-//Funcion que obtiene el tamaño del maze al leer la primera linea
+// Funcion que obtiene el tamaño del maze al leer la primera linea
 int getSize(FILE * fp) {
     char c;
     char * num = (char *)malloc(sizeof (char) * 1024);
@@ -19,8 +18,8 @@ int getSize(FILE * fp) {
     return atoi(num);
 }
 
-//Se construye un string con las posiciones del jugador, del objetivo, de las barreras y los espacios abiertos
-//El string se devuelve junto y listo para ser iterado Ex. 1_*___*_*___*_*_*_*_*___*_*_*_*_***_*___*_*___*_*___*_***_*___*_*_*_____*_____*___*_*_*_*___*_*_*__2
+// Se construye un string con las posiciones del jugador, del objetivo, de las barreras y los espacios abiertos
+// El string se devuelve junto y listo para ser iterado Ex. 1_*___*_*___*_*_*_*_*___*_*_*_*_***_*___*_*___*_*___*_***_*___*_*_*_____*_____*___*_*_*_*___*_*_*__2
 char * buildString(char * maze, FILE * fp) {
     char c;
     char * tmp = maze;
@@ -31,7 +30,7 @@ char * buildString(char * maze, FILE * fp) {
     return maze;
 }
 
-//Se devuelve un struct scanner donde se almacena el tamaño del laberinto y un string con el laberinto
+// Se devuelve un struct scanner donde se almacena el tamaño del laberinto y un string con el laberinto
 struct scanner buildScanner(FILE * fp, char * maze) {
     struct scanner sc;
     sc.size = getSize(fp);
@@ -39,9 +38,8 @@ struct scanner buildScanner(FILE * fp, char * maze) {
     return sc;
 }
 
-//Funcion que abre el archivo maze.txt e inicializa variables para la construccion del struct scanner con los datos del maze
-struct scanner scan()
-{
+// Funcion que abre el archivo maze.txt e inicializa variables para la construccion del struct scanner con los datos del maze
+struct scanner scan() {
     FILE * fp;
     char *maze = (char *)malloc(sizeof (char) * 1024);
     fp = fopen("maze.txt", "r");
@@ -49,12 +47,3 @@ struct scanner scan()
     fclose(fp);
     return sc;
 }
-
-//Funcion de prueba
-/*  int main(int argc, char const *argv[])
-{
-    struct scanner s = scan();
-    printf("%d %s", s.size, s.maze);
-    return 0;
-} 
- */
