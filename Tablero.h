@@ -1,4 +1,4 @@
-#include "struct.h"
+#include "printer.h"
 #include "queue.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -96,32 +96,6 @@ int cleanGrid(struct Tile** pointer_grid){
         
     }
     return o;
-}
-
-void printGridBinaryFile(struct Tile** grid, int x, int y, int x1, int y1){
-    FILE * fp;
-    fp = fopen("out","w");
-    for(int i = 0; i < size+1; i++)
-        fprintf(fp,"■");
-    for(int i = 0; i < size*size; i++){
-        if(i%size==0){
-            fprintf(fp,"■");
-            fprintf(fp,"\n");
-            fprintf(fp,"■");
-        }
-        if(x+y*size == i)
-            fprintf(fp,"o");
-        else if(x1+y1*size == i)
-            fprintf(fp,"x");
-        else
-            fprintf(fp,"%s",((*grid)+i)->val ? "■":" ");
-    }
-    fprintf(fp,"■");
-    fprintf(fp,"\n");
-    for(int i = 0; i < size+2; i++)
-        fprintf(fp,"■");
-    fprintf(fp,"\n");
-    fclose(fp);
 }
 
 struct Tile* draw(struct Tile* t, int direction,int move){

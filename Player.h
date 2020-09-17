@@ -12,7 +12,7 @@ int game(struct Player* player,int x, int y,struct Tile* goal,struct Tablero* bo
     while (player->pos != goal && cont)
     {
         movements++;
-        printGridBinaryFile(board->grid, player->pos->self->x, player->pos->self->y,goal->self->x,goal->self->y);
+        printGridBinaryFile(board->grid, player->pos->self->x, player->pos->self->y,goal->self->x,goal->self->y, board->height);
         // system("clear");
         printTile(player->pos,goal);
         char c;
@@ -69,7 +69,7 @@ int game(struct Player* player,int x, int y,struct Tile* goal,struct Tablero* bo
         }
     }
     // system("clear");
-    printGridBinaryFile(board->grid, player->pos->self->x, player->pos->self->y,goal->self->x,goal->self->y);
+    printGridBinaryFile(board->grid, player->pos->self->x, player->pos->self->y,goal->self->x,goal->self->y, board->height);
     return movements;
 }
 
@@ -138,7 +138,7 @@ int autoGame(struct Player* player,int x, int y,struct Tile* goal,struct Tablero
     while (player->pos != goal && cont)
     {
         movements++;
-        printGridBinaryFile(board->grid, player->pos->self->x, player->pos->self->y,goal->self->x,goal->self->y);
+        printGridBinaryFile(board->grid, player->pos->self->x, player->pos->self->y,goal->self->x,goal->self->y,board->height);
         system("cls");
         printTile(player->pos,goal);
         char c = get(&stack)->dir;
@@ -195,7 +195,7 @@ int autoGame(struct Player* player,int x, int y,struct Tile* goal,struct Tablero
         sleep(1);
     }
     system("cls");
-    printGridBinaryFile(board->grid, player->pos->self->x, player->pos->self->y,goal->self->x,goal->self->y);
+    printGridBinaryFile(board->grid, player->pos->self->x, player->pos->self->y,goal->self->x,goal->self->y, board->height);
     printTile(player->pos,goal);
     return movements;
 }
